@@ -21,6 +21,7 @@ import "@fontsource/public-sans/700.css";
 import "@fontsource/public-sans/800.css";
 import "./global.css";
 
+
 const router = createBrowserRouter([
   {
     path: "",
@@ -70,16 +71,26 @@ const router = createBrowserRouter([
   }
 ]);
 
-export function App() {
-  React.useLayoutEffect(() => {
-    let root = document.documentElement;
-    const vh = Math.max(root.clientHeight || 0, window.innerHeight || 0);
-    root.style.setProperty("--app-root-winh", `${vh}px`);
-  }, []);
 
-  return (
-    <React.Fragment>
-      <RouterProvider router={router} />
-    </React.Fragment>
-  );
+
+export function App() {
+    React.useLayoutEffect(() => {
+      let root = document.documentElement;
+      const vh = Math.max(root.clientHeight || 0, window.innerHeight || 0);
+      root.style.setProperty("--app-root-winh", `${vh}px`);
+    }, []);
+ 
+    return (
+      <React.Fragment>
+        <RouterProvider router={router} />
+      </React.Fragment>
+      );
 }
+
+
+
+// return (
+//   <React.Fragment>
+//     <RouterProvider router={router} />
+//   </React.Fragment>
+// );

@@ -2,6 +2,11 @@ import "./styles.css";
 
 import React, { Component, useState, useEffect } from "react";
 
+
+import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
+import { WalletConnect } from "@web3-react/walletconnect";
+import { MetaMaskProvider } from "metamask-react";
+
 import { Tab } from "@headlessui/react";
 
 import { PageView } from "layout/PageView";
@@ -9,14 +14,72 @@ import InputComponent from "components/InputComponent";
 import { UploadAvatar } from "components/UploadAvatar/UploadAvatar";
 import { Switch } from "components/Switch";
 
+import { ethers } from 'ethers';
+import Web3Modal from 'web3modal';
+
+
+declare global {
+  interface Window {
+    ethers: any;
+    Web3Modal: any;
+  }
+}
+
 function Login({
   onSubmit,
   onUsernameChange,
   onPasswordChange,
-} : any) {
+}: any) {
+  
+  const providerOptions = {
+    coinbasewallet: {
+      package: CoinbaseWallet,
+      options: {
+        appName: "Web3 Modal",
+        alchemyID: "https://eth-sepolia.g.alchemy.com/v2/8rESpa_jemLuOUO1hUESSQeFpUP1_Rqg"
+      }
+    },
+    walletconnect: {
+      package: WalletConnect,
+      options: {
+        appName: "Web3 Modal",
+        alchemyID: "https://eth-sepolia.g.alchemy.com/v2/8rESpa_jemLuOUO1hUESSQeFpUP1_Rqg"
+      }
+    },
+    // metamaskwallet: {
+    //   package: MetaMaskProvider,
+    //   options: {
+    //     appName: "Web3 Modal",
+    //     alchemyID: "https://eth-sepolia.g.alchemy.com/v2/8rESpa_jemLuOUO1hUESSQeFpUP1_Rqg"
+    //   }
+    // },
+  }
+  
+    async function connectWallet() {
+      try {
+        let web3Modal = new Web3Modal( {
+          cacheProvider: false,
+          providerOptions,
+        });
+        const web3Instance = await web3Modal.connect();
+        const web3Provider = new ethers.providers.Web3Provider(web3Instance)
+        const signer = web3Provider.getSigner();
+        const address = await signer.getAddress();
+  
+       console.log('Connected address:', address);
+        alert(`Connected address: ${address}`);
+        
+        console.log(web3Provider);
+      } catch (error) {
+        console.log(error)
+      }
+  }
+  
   return (
     <section>
-
+      <button onClick={connectWallet} className='mt-12 flex w-full items-center justify-center rounded-half bg-blue-high px-20 py-3 text-dim-black hover:bg-blue-high/80 md:w-auto'>
+        Connect Wallet
+      </button>
       <div className='mt-6 flex flex-wrap items-center gap-x-5 gap-y-6'>
         <InputComponent label="Username" onChange={onUsernameChange} type="text" placeholder='Username' style="w-full md:w-80" />
       </div>
