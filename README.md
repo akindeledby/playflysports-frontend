@@ -1,2 +1,2 @@
 # playflysports-frontend
-This project is a task given to me by Playflysports to add a connect button to the login page of the web3 application which will allow users connect to any blockchain wallet of their choice
+This project built together with the Playflysports dev team to integrate the web application with web 3/blockchain functionalities to allow players connect any blockchain wallet of their choice and play the game.
